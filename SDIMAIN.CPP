@@ -20,8 +20,8 @@ struct Return{
     long double x,y,m,n;
 };
 //---------------------------------------------------------------------
-Return __fastcall CULC(long double A, long double B, long double x, long double y, long double m, long double n, long double dl){
-	Return  K;
+Return __fastcall Step(long double A, long double B, long double x, long double y, long double m, long double n, long double dl){
+	Return K;
 	long double a,b,xc,L,dln,xn,yn;
 	if(m-x>0 && n-y>0){
 		a = (y-n)/(x-m);
@@ -37,17 +37,13 @@ Return __fastcall CULC(long double A, long double B, long double x, long double 
 				K.n = y+2*dl*sqrt(a*a/(1+a*a));
 				return  K;
 			}else{
-				m = x + dl * sqrt(a*a/(1+a*a));
-				n = y + dl * sqrt(1/(1+a*a));
+				m = x + dl * sqrt(1/(1+a*a));
+				n = y + dl * sqrt(a*a/(1+a*a));
 				dln=dl-L;
 				xn=xc;
 				yn=a*xn+b;
 				m=m-2*dln*sqrt(1/(1+a*a));
-				K.x = xn;
-				K.y = yn;
-				K.m = m;
-				K.n = n;
-				return  K;
+				return Step(A1,B1,xn,yn,m,n,dln);
 			}
 		}else{
 			L=sqrt((xc-x)*(xc-x)+(a*xc+b-y)*(a*xc+b-y));
@@ -58,17 +54,13 @@ Return __fastcall CULC(long double A, long double B, long double x, long double 
 				K.n = y+2*dl*sqrt(a*a/(1+a*a));
 				return  K;
 			}else{
-				m = x + dl * sqrt(a*a/(1+a*a));
-				n = y + dl * sqrt(1/(1+a*a));
+				m = x + dl * sqrt(1/(1+a*a));
+				n = y + dl * sqrt(a*a/(1+a*a));
 				dln=dl-L;
 				xn=xc;
 				yn=B;
 				n=n-2*dln*sqrt(a*a/(1+a*a));
-				K.x = xn;
-				K.y = yn;
-				K.m = m;
-				K.n = n;
-				return  K;
+				return Step(A1,B1,xn,yn,m,n,dln);
 			}
 		}
 	}else{
@@ -86,17 +78,13 @@ Return __fastcall CULC(long double A, long double B, long double x, long double 
 					K.n = y-2*dl*sqrt(a*a/(1+a*a));
 					return  K;
 				}else{
-					m = x + dl * sqrt(a*a/(1+a*a));
-					n = y - dl * sqrt(1/(1+a*a));
+					m = x + dl * sqrt(1/(1+a*a));
+					n = y - dl * sqrt(a*a/(1+a*a));
 					dln=dl-L;
 					xn=xc;
 					yn=a*xn+b;
 					m=m-2*dln*sqrt(1/(1+a*a));
-					K.x = xn;
-					K.y = yn;
-					K.m = m;
-					K.n = n;
-					return  K;
+					return Step(A1,B1,xn,yn,m,n,dln);
 				}
 			}else{
 				L=sqrt((xc-x)*(xc-x)+(a*xc+b-y)*(a*xc+b-y));
@@ -107,17 +95,13 @@ Return __fastcall CULC(long double A, long double B, long double x, long double 
 					K.n = y-2*dl*sqrt(a*a/(1+a*a));
 					return  K;
 				}else{
-					m = x + dl * sqrt(a*a/(1+a*a));
-					n = y - dl * sqrt(1/(1+a*a));
+					m = x + dl * sqrt(1/(1+a*a));
+					n = y - dl * sqrt(a*a/(1+a*a));
 					dln=dl-L;
 					xn=xc;
 					yn=0;
 					n=n+2*dln*sqrt(a*a/(1+a*a));
-					K.x = xn;
-					K.y = yn;
-					K.m = m;
-					K.n = n;
-					return  K;
+					return Step(A1,B1,xn,yn,m,n,dln);
 				}
 			}
 		}else{
@@ -135,17 +119,13 @@ Return __fastcall CULC(long double A, long double B, long double x, long double 
 						K.n = y+2*dl*sqrt(a*a/(1+a*a));
 						return  K;
 					}else{
-						m = x - dl * sqrt(a*a/(1+a*a));
-						n = y + dl * sqrt(1/(1+a*a));
+						m = x - dl * sqrt(1/(1+a*a));
+						n = y + dl * sqrt(a*a/(1+a*a));
 						dln=dl-L;
 						xn=xc;
 						yn=a*xn+b;
 						m=m+2*dln*sqrt(1/(1+a*a));
-						K.x = xn;
-						K.y = yn;
-						K.m = m;
-						K.n = n;
-						return  K;
+						return Step(A1,B1,xn,yn,m,n,dln);
 					}
 				}else{
 					L=sqrt((xc-x)*(xc-x)+(a*xc+b-y)*(a*xc+b-y));
@@ -156,17 +136,13 @@ Return __fastcall CULC(long double A, long double B, long double x, long double 
 						K.n = y+2*dl*sqrt(a*a/(1+a*a));
 						return  K;
 					}else{
-						m = x - dl * sqrt(a*a/(1+a*a));
-						n = y + dl * sqrt(1/(1+a*a));
+						m = x - dl * sqrt(1/(1+a*a));
+						n = y + dl * sqrt(a*a/(1+a*a));
 						dln=dl-L;
 						xn=xc;
 						yn=B;
 						n=n-2*dln*sqrt(a*a/(1+a*a));
-						K.x = xn;
-						K.y = yn;
-						K.m = m;
-						K.n = n;
-						return  K;
+ 						return Step(A1,B1,xn,yn,m,n,dln);
 					}
 				}
 			}else{
@@ -183,17 +159,13 @@ Return __fastcall CULC(long double A, long double B, long double x, long double 
 						K.n = y-2*dl*sqrt(a*a/(1+a*a));
 						return  K;
 					}else{
-						m = x - dl * sqrt(a*a/(1+a*a));
-						n = y - dl * sqrt(1/(1+a*a));
+						m = x - dl * sqrt(1/(1+a*a));
+						n = y - dl * sqrt(a*a/(1+a*a));
 						dln=dl-L;
 						xn=xc;
 						yn=a*xn+b;
 						m=m+2*dln*sqrt(1/(1+a*a));
-						K.x = xn;
-						K.y = yn;
-						K.m = m;
-						K.n = n;
-						return  K;
+						return Step(A1,B1,xn,yn,m,n,dln);
 					}
 				}else{
 					L=sqrt((xc-x)*(xc-x)+(a*xc+b-y)*(a*xc+b-y));
@@ -204,17 +176,13 @@ Return __fastcall CULC(long double A, long double B, long double x, long double 
 						K.n = y-2*dl*sqrt(a*a/(1+a*a));
 						return  K;
 					}else{
-						m = x - dl * sqrt(a*a/(1+a*a));
-						n = y - dl * sqrt(1/(1+a*a));
+						m = x - dl * sqrt(1/(1+a*a));
+						n = y - dl * sqrt(a*a/(1+a*a));
 						dln=dl-L;
 						xn=xc;
 						yn=0;
 						n=n+2*dln*sqrt(a*a/(1+a*a));
-						K.x = xn;
-						K.y = yn;
-						K.m = m;
-						K.n = n;
-						return  K;
+						return Step(A1,B1,xn,yn,m,n,dln);
 					}
 				}
             }
@@ -259,12 +227,12 @@ void __fastcall TSDIAppForm::Image1MouseDown(TObject *Sender, TMouseButton Butto
 void __fastcall TSDIAppForm::Timer1Timer(TObject *Sender)
 {
 	Return G;
-	G =  CULC(A1,B1,x1,y1,m1,n1,dl1);
+	G = Step(A1,B1,x1,y1,m1,n1,dl1);
+	Image1->Canvas->Pen->Color=clBlack;
+	Image1->Canvas->Pen->Width=2;
 	Image1->Canvas->Pen->Color=clWhite;
     Image1->Canvas->Pen->Width=4;
 	Image1->Canvas->Ellipse((x1+r)-r,(y1+r)-r,(x1+r)+r,(y1+r)+r);
-    Image1->Canvas->MoveTo(x1+r, y1+r);
-	Image1->Canvas->LineTo(m1+r, n1+r);
 	x1 = G.x;
 	y1 = G.y;
 	m1 = G.m;

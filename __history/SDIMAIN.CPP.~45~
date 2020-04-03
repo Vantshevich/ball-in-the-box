@@ -1,0 +1,272 @@
+//---------------------------------------------------------------------
+#include <vcl.h>
+#pragma hdrstop
+
+#include "SDIMain.h"
+#include "About.h"
+#include "math.h"
+//---------------------------------------------------------------------
+#pragma resource "*.dfm"
+TSDIAppForm *SDIAppForm;
+//---------------------------------------------------------------------
+__fastcall TSDIAppForm::TSDIAppForm(TComponent *AOwner)
+	: TForm(AOwner)
+{
+}
+//---------------------------------------------------------------------
+long double x1,y1,m1,n1,r=30,A1,B1,dl1=20;
+
+struct Return{
+    long double x,y,m,n;
+};
+//---------------------------------------------------------------------
+Return __fastcall Step(long double A, long double B, long double x, long double y, long double m, long double n, long double dl){
+	Return K;
+	long double a,b,xc,L,dln,xn,yn;
+	if(m-x>0 && n-y>0){
+		a = (y-n)/(x-m);
+		b = y - x*a;
+		xc = (B-b)/a;
+		if(xc>A){
+			xc=A;
+			L=sqrt((xc-x)*(xc-x)+(a*xc+b-y)*(a*xc+b-y));
+			if(L>dl){
+				K.x = x+dl*sqrt(1/(a*a+1));
+				K.y = y+dl*sqrt(a*a/(1+a*a));
+				K.m = x+2*dl*sqrt(1/(a*a+1));
+				K.n = y+2*dl*sqrt(a*a/(1+a*a));
+				return  K;
+			}else{
+				m = x + dl * sqrt(1/(1+a*a));
+				n = y + dl * sqrt(a*a/(1+a*a));
+				dln=dl-L;
+				xn=xc;
+				yn=a*xn+b;
+				m=m-2*dln*sqrt(1/(1+a*a));
+				return Step(A1,B1,xn,yn,m,n,dln);
+			}
+		}else{
+			L=sqrt((xc-x)*(xc-x)+(a*xc+b-y)*(a*xc+b-y));
+			if(L>dl){
+				K.x = x+dl*sqrt(1/(a*a+1));
+				K.y = y+dl*sqrt(a*a/(1+a*a));
+				K.m = x+2*dl*sqrt(1/(a*a+1));
+				K.n = y+2*dl*sqrt(a*a/(1+a*a));
+				return  K;
+			}else{
+				m = x + dl * sqrt(1/(1+a*a));
+				n = y + dl * sqrt(a*a/(1+a*a));
+				dln=dl-L;
+				xn=xc;
+				yn=B;
+				n=n-2*dln*sqrt(a*a/(1+a*a));
+				return Step(A1,B1,xn,yn,m,n,dln);
+			}
+		}
+	}else{
+		if(m-x>0 && n-y<0){
+			a = (y-n)/(x-m);
+			b = y - x*a;
+			xc = (-b)/a;
+			if(xc>A){
+				xc=A;
+				L=sqrt((xc-x)*(xc-x)+(a*xc+b-y)*(a*xc+b-y));
+				if(L>dl){
+					K.x = x+dl*sqrt(1/(a*a+1));
+					K.y = y-dl*sqrt(a*a/(1+a*a));
+					K.m = x+2*dl*sqrt(1/(a*a+1));
+					K.n = y-2*dl*sqrt(a*a/(1+a*a));
+					return  K;
+				}else{
+					m = x + dl * sqrt(1/(1+a*a));
+					n = y - dl * sqrt(a*a/(1+a*a));
+					dln=dl-L;
+					xn=xc;
+					yn=a*xn+b;
+					m=m-2*dln*sqrt(1/(1+a*a));
+					return Step(A1,B1,xn,yn,m,n,dln);
+				}
+			}else{
+				L=sqrt((xc-x)*(xc-x)+(a*xc+b-y)*(a*xc+b-y));
+				if(L>dl){
+					K.x = x+dl*sqrt(1/(a*a+1));
+					K.y = y-dl*sqrt(a*a/(1+a*a));
+					K.m = x+2*dl*sqrt(1/(a*a+1));
+					K.n = y-2*dl*sqrt(a*a/(1+a*a));
+					return  K;
+				}else{
+					m = x + dl * sqrt(1/(1+a*a));
+					n = y - dl * sqrt(a*a/(1+a*a));
+					dln=dl-L;
+					xn=xc;
+					yn=0;
+					n=n+2*dln*sqrt(a*a/(1+a*a));
+					return Step(A1,B1,xn,yn,m,n,dln);
+				}
+			}
+		}else{
+			if(m-x<0 && n-y>0){
+				a = (y-n)/(x-m);
+				b = y - x*a;
+				xc = (B-b)/a;
+				if(xc<0){
+					xc=0;
+					L=sqrt((xc-x)*(xc-x)+(a*xc+b-y)*(a*xc+b-y));
+					if(L>dl){
+						K.x = x-dl*sqrt(1/(a*a+1));
+						K.y = y+dl*sqrt(a*a/(1+a*a));
+						K.m = x-2*dl*sqrt(1/(a*a+1));
+						K.n = y+2*dl*sqrt(a*a/(1+a*a));
+						return  K;
+					}else{
+						m = x - dl * sqrt(1/(1+a*a));
+						n = y + dl * sqrt(a*a/(1+a*a));
+						dln=dl-L;
+						xn=xc;
+						yn=a*xn+b;
+						m=m+2*dln*sqrt(1/(1+a*a));
+						return Step(A1,B1,xn,yn,m,n,dln);
+					}
+				}else{
+					L=sqrt((xc-x)*(xc-x)+(a*xc+b-y)*(a*xc+b-y));
+					if(L>dl){
+						K.x = x-dl*sqrt(1/(a*a+1));
+						K.y = y+dl*sqrt(a*a/(1+a*a));
+						K.m = x-2*dl*sqrt(1/(a*a+1));
+						K.n = y+2*dl*sqrt(a*a/(1+a*a));
+						return  K;
+					}else{
+						m = x - dl * sqrt(1/(1+a*a));
+						n = y + dl * sqrt(a*a/(1+a*a));
+						dln=dl-L;
+						xn=xc;
+						yn=B;
+						n=n-2*dln*sqrt(a*a/(1+a*a));
+ 						return Step(A1,B1,xn,yn,m,n,dln);
+					}
+				}
+			}else{
+                a = (y-n)/(x-m);
+				b = y - x*a;
+				xc = (-b)/a;
+				if(xc<0){
+					xc=0;
+					L=sqrt((xc-x)*(xc-x)+(a*xc+b-y)*(a*xc+b-y));
+					if(L>dl){
+						K.x = x-dl*sqrt(1/(a*a+1));
+						K.y = y-dl*sqrt(a*a/(1+a*a));
+						K.m = x-2*dl*sqrt(1/(a*a+1));
+						K.n = y-2*dl*sqrt(a*a/(1+a*a));
+						return  K;
+					}else{
+						m = x - dl * sqrt(a*a/(1+a*a));
+						n = y - dl * sqrt(1/(1+a*a));
+						dln=dl-L;
+						xn=xc;
+						yn=a*xn+b;
+						m=m+2*dln*sqrt(1/(1+a*a));
+						return Step(A1,B1,xn,yn,m,n,dln);
+					}
+				}else{
+					L=sqrt((xc-x)*(xc-x)+(a*xc+b-y)*(a*xc+b-y));
+					if(L>dl){
+						K.x = x-dl*sqrt(1/(a*a+1));
+						K.y = y-dl*sqrt(a*a/(1+a*a));
+						K.m = x-2*dl*sqrt(1/(a*a+1));
+						K.n = y-2*dl*sqrt(a*a/(1+a*a));
+						return  K;
+					}else{
+						m = x - dl * sqrt(a*a/(1+a*a));
+						n = y - dl * sqrt(1/(1+a*a));
+						dln=dl-L;
+						xn=xc;
+						yn=0;
+						n=n+2*dln*sqrt(a*a/(1+a*a));
+						return Step(A1,B1,xn,yn,m,n,dln);
+					}
+				}
+            }
+        }
+    }
+}
+
+//---------------------------------------------------------------------
+
+void __fastcall TSDIAppForm::FormCreate(TObject *Sender)
+{
+	x1=(Image1->Width)/2-r;
+	y1=(Image1->Height)/2-r;
+	A1=Image1->Width-2*r;
+	B1=Image1->Height-2*r;
+	Image1->Canvas->Pen->Width=4;
+	Image1->Canvas->Pen->Color=clBlack;
+	Image1->Canvas->MoveTo(0, 0);
+	Image1->Canvas->LineTo(0, Image1->Height);
+	Image1->Canvas->LineTo(Image1->Width, Image1->Height);
+	Image1->Canvas->LineTo(Image1->Width, 0);
+	Image1->Canvas->LineTo(0, 0);
+	Image1->Canvas->Pen->Width=2;
+	Image1->Canvas->Ellipse((Image1->Width)/2-r,(Image1->Height)/2-r,(Image1->Width)/2+r,(Image1->Height)/2+r);
+    TrackBar1->Position = dl1;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TSDIAppForm::Image1MouseDown(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y)
+{
+	if(Timer1->Enabled==true){
+		Timer1->Enabled=false;
+	}else{
+		Timer1->Enabled=true;
+		m1 = X-r;
+		n1 = Y-r;
+	}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TSDIAppForm::Timer1Timer(TObject *Sender)
+{
+	Return G;
+    Image1->Canvas->Pen->Color=clWhite;
+ 	Image1->Canvas->Pen->Width=4;
+	Image1->Canvas->MoveTo(x1+r, y1+r);
+	Image1->Canvas->LineTo(m1+r, n1+r);
+	G = Step(A1,B1,x1,y1,m1,n1,dl1);
+	Image1->Canvas->Pen->Color=clBlack;
+	Image1->Canvas->Pen->Width=2;
+	Image1->Canvas->MoveTo(G.x+r, G.y+r);
+	Image1->Canvas->LineTo(G.m+r, G.n+r);
+	Image1->Canvas->Pen->Color=clWhite;
+    Image1->Canvas->Pen->Width=4;
+	Image1->Canvas->Ellipse((x1+r)-r,(y1+r)-r,(x1+r)+r,(y1+r)+r);
+    Image1->Canvas->MoveTo(x1+r, y1+r);
+	Image1->Canvas->LineTo(m1+r, n1+r);
+	x1 = G.x;
+	y1 = G.y;
+	m1 = G.m;
+	n1 = G.n;
+	Image1->Canvas->Pen->Color=clBlack;
+    Image1->Canvas->Pen->Width=2;
+	Image1->Canvas->Ellipse((x1+r)-r,(y1+r)-r,(x1+r)+r,(y1+r)+r);
+    Image1->Canvas->Pen->Width=4;
+	Image1->Canvas->Pen->Color=clBlack;
+	Image1->Canvas->MoveTo(0, 0);
+	Image1->Canvas->LineTo(0, Image1->Height);
+	Image1->Canvas->LineTo(Image1->Width, Image1->Height);
+	Image1->Canvas->LineTo(Image1->Width, 0);
+	Image1->Canvas->LineTo(0, 0);
+
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TSDIAppForm::TrackBar1Change(TObject *Sender)
+{
+    dl1 = TrackBar1->Position;
+}
+//---------------------------------------------------------------------------
+
+
+
+
+
